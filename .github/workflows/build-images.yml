@@ -41,7 +41,7 @@ jobs:
           images: ${{ matrix.image }}
           labels: |
             maintainer=Kamil Pfaff
-            org.opencontainers.image.title=AlmaLinux Node
+            org.opencontainers.image.title=alma-node
           tags: ${{ matrix.tags }}
 
       - name: Build and push Docker image
@@ -50,8 +50,8 @@ jobs:
           context: ${{ matrix.context }}
           file: ${{ matrix.dockerfile }}
           push: true
-          tags: ${{ steps.meta.output.tags }}
-          labels: ${{ steps.meta.output.labels }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
 
 # 1. Generate list of tags.
