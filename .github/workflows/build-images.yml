@@ -1,0 +1,58 @@
+name: Build and publish docker images.
+
+on: workflow_dispatch
+
+jobs:
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dockerfile: ./node/9.2-node-minimal.dockerfile
+            context: ./node
+            image: pfaffk/node
+            tags: |
+              type=raw,value=16-alma9.2-minimal
+              type=raw,value=16-alma9.2-minimal-{{date 'YYYYMMDD'}}
+
+          - dockerfile: ./node/9.2-node.dockerfile
+            context: ./node
+            image: pfaffk/node
+            tags: |
+              type=raw,value=16-alma9.2
+              type=raw,value=16-alma9.2-{{date 'YYYYMMDD'}}
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+          uses: docker/metadata-action@v4
+          with:
+            images: ${{ matrix.image }}
+            labels: |
+              maintainer=Kamil Pfaff
+              org.opencontainers.image.title=AlmaLinux Node
+            tags: ${{ matrix.tags }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: ${{ steps.meta.output.tags }}
+          labels: ${{ steps.meta.output.labels }}
+
+
+# 1. Generate list of tags.
+# 2. Generate list of labels.
