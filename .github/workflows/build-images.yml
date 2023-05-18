@@ -36,13 +36,13 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-          uses: docker/metadata-action@v4
-          with:
-            images: ${{ matrix.image }}
-            labels: |
-              maintainer=Kamil Pfaff
-              org.opencontainers.image.title=AlmaLinux Node
-            tags: ${{ matrix.tags }}
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ matrix.image }}
+          labels: |
+            maintainer=Kamil Pfaff
+            org.opencontainers.image.title=AlmaLinux Node
+          tags: ${{ matrix.tags }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
