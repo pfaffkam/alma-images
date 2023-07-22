@@ -1,7 +1,7 @@
 # alma-images
 Project that create utility docker images based on AlmaLinux (RedHat binary compatibe distro).
 
-All containes have unified naming convention:
+All container images have unified naming convention:
 - `container-name` `:` `containerVersion` `-` `system` `system.version` - basic image with full system.
   - `pfaffk/node:16-alma9.2`
  

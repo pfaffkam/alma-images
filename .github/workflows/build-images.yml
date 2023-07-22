@@ -10,19 +10,34 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./node/9.2-node-minimal.dockerfile
+          - dockerfile: ./node/16-alma9.2.dockerfile
+            context: ./node
+            image: pfaffk/node
+            tags: |
+              type=raw,value=16-alma9.2
+              type=raw,value=16-alma9.2-{{date 'YYYYMMDD'}}
+
+          - dockerfile: ./node/16-alma9.2-minimal.dockerfile
             context: ./node
             image: pfaffk/node
             tags: |
               type=raw,value=16-alma9.2-minimal
               type=raw,value=16-alma9.2-minimal-{{date 'YYYYMMDD'}}
 
-          - dockerfile: ./node/9.2-node.dockerfile
+          - dockerfile: ./node/18-alma9.2.dockerfile
             context: ./node
             image: pfaffk/node
             tags: |
-              type=raw,value=16-alma9.2
-              type=raw,value=16-alma9.2-{{date 'YYYYMMDD'}}
+              type=raw,value=18-alma9.2
+              type=raw,value=18-alma9.2-{{date 'YYYYMMDD'}}
+
+          - dockerfile: ./node/18-alma9.2-minimal.dockerfile
+            context: ./node
+            image: pfaffk/node
+            tags: |
+              type=raw,value=18-alma9.2-minimal
+              type=raw,value=18-alma9.2-minimal-{{date 'YYYYMMDD'}}
+
 
     steps:
       - name: Check out the repo
@@ -52,7 +67,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-
-# 1. Generate list of tags.
-# 2. Generate list of labels.
