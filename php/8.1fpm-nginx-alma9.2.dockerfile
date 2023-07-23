@@ -10,7 +10,10 @@ RUN dnf -y install nginx supervisor \
 # NGINX configuration
 RUN sed -i \
       -e 's/^user .*/user www-data;/' \
-      /etc/nginx/nginx.conf
+      -e 's#^pid .*#pid /run/nginx/nginx.pid;#' \
+      /etc/nginx/nginx.conf \
+  && mkdir -p /run/nginx \
+  && chown -R 1000:1000 /var/lib/nginx /var/log/nginx /run/nginx
 
 # SUPERVISOR configuration
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
