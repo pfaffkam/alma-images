@@ -1,4 +1,4 @@
-name: Build and publish docker images.
+name: Build and publish NODE docker images.
 
 on: workflow_dispatch
 
