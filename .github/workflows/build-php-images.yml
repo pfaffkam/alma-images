@@ -3,9 +3,18 @@ name: Build and publish PHP docker images.
 on: workflow_dispatch
 
 jobs:
-  push_to_registry:
-    name: Push Docker image to Docker Hub
+  get_current_date:
     runs-on: ubuntu-latest
+    outputs:
+      date: ${{ steps.get-date.outputs.date }}
+    steps:
+      - id: get-date
+        run: echo "date=$(date +'%Y%m%d')" >> $GITHUB_OUTPUT
+  
+  push_to_registry:
+    name: Push Docker images to Docker Hub
+    runs-on: ubuntu-latest
+    needs: ["get_current_date"]
     strategy:
       fail-fast: false
       matrix:
@@ -15,8 +24,7 @@ jobs:
             image: pfaffk/php
             tags: |
               type=raw,value=8.1fpm-alma9.2
-              type=raw,value=8.1fpm-alma9.2-{{date 'YYYYMMDD'}}
-
+              type=raw,value=8.1fpm-alma9.2-${{ needs.get_current_date.outputs.date }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -48,9 +56,9 @@ jobs:
 
 
   push_to_registry_second: # Build images that are related on first part
-    name: Push Docker image to Docker Hub
+    name: Push second Docker images to Docker Hub
     runs-on: ubuntu-latest
-    needs: push_to_registry
+    needs: ["get_current_date", "push_to_registry"]
     strategy:
       fail-fast: false
       matrix:
@@ -60,7 +68,7 @@ jobs:
             image: pfaffk/php
             tags: |
               type=raw,value=8.1fpm-nginx-alma9.2
-              type=raw,value=8.1fpm-nginx-alma9.2-{{date 'YYYYMMDD'}}
+              type=raw,value=8.1fpm-nginx-alma9.2-${{ needs.get_current_date.outputs.date }}
 
     steps:
       - name: Check out the repo
@@ -91,4 +99,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            DATE={{date 'YYYYMMDD'}}
+            DATE=${{ needs.get_current_date.outputs.date }}
