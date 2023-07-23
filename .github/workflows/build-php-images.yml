@@ -99,4 +99,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            DATE=${{ needs.get_current_date.outputs.date }}
+            DATE="-${{ needs.get_current_date.outputs.date }}"

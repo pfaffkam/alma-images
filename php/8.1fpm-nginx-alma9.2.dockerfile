@@ -1,4 +1,6 @@
-FROM pfaffk/php:8.1fpm-alma9.2-${DATE}
+# Date should be prefixed with '-'
+ARG DATE="" 
+FROM pfaffk/php:8.1fpm-alma9.2${DATE}
 
 RUN dnf -y install nginx supervisor \
   && dnf -y clean all --enablerepo='*'
