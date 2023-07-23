@@ -2,6 +2,8 @@
 ARG DATE="" 
 FROM pfaffk/php:8.1fpm-alma9.2${DATE}
 
+USER 0
+
 RUN dnf -y install nginx supervisor \
   && dnf -y clean all --enablerepo='*'
 
@@ -13,5 +15,4 @@ RUN sed -i \
 # SUPERVISOR configuration
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-USER 0
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
