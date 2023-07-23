@@ -7,10 +7,11 @@ RUN dnf -y install nginx supervisor \
 
 # NGINX configuration
 RUN sed -i \
-      -e 's/user .*/user www-data/' \
+      -e 's/^user .*/user www-data;/' \
       /etc/nginx/nginx.conf
 
 # SUPERVISOR configuration
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+USER 0
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
