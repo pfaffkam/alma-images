@@ -20,7 +20,8 @@ RUN useradd -u 1000 www-data \
        -e 's/^listen =.*/listen = 127.0.0.1:9000/' \
        /etc/php-fpm.d/www.conf \
   && rm -rf /var/www/* \
-  && chown 1000:1000 /var/www
+  && mkdir -p /run/php-fpm \
+  && chown 1000:1000 /var/www /run/php-fpm /var/log/php-fpm
 
 USER 1000
 WORKDIR /var/www
