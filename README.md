@@ -24,4 +24,3 @@ All container images have unified naming convention:
 | | | | |
 | `pfaffk/php:8.1fpm-alma-9.2`       | PHP-FPM (**8.1**)         | Alma 9.2 | PHP applications | :green_circle: |
 | `pfaffk/php:8.1fpm-nginx-alma-9.2` | PHP-FPM (**8.1**) + NGINX | Alma 9.2 | PHP applications | :green_circle: |
-
