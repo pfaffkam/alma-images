@@ -14,8 +14,8 @@ jobs:
             context: ./nginx
             image: pfaffk/nginx
             tags: |
-              type=raw,value=16-alma9.2
-              type=raw,value=16-alma9.2-{{date 'YYYYMMDD'}}
+              type=raw,value=mainline-alma9.2
+              type=raw,value=mainline-alma9.2-{{date 'YYYYMMDD'}}
 
 
     steps:
