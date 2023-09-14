@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./nginx/mainline-alma9.2.dockerifle
+          - dockerfile: ./nginx/mainline-alma9.2.dockerfile
             context: ./nginx
             image: pfaffk/nginx
             tags: |
