@@ -17,10 +17,11 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Drop root user
 RUN touch /var/run/nginx.pid \
- && chown -R 1000:0 /var/cache/nginx \
+ && ln -s /usr/share/nginx/html /www \
+ && chown -R 1000:0 /usr/share/nginx \
+                    /var/cache/nginx \
                     /var/log/nginx \
                     /etc/nginx/conf.d \
-                    /usr/share/nginx \
                     /var/run/nginx.pid \
  && rm /etc/nginx/conf.d/default.conf
 
