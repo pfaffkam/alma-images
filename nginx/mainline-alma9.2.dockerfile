@@ -23,8 +23,10 @@ RUN touch /var/run/nginx.pid \
                     /var/log/nginx \
                     /etc/nginx/conf.d \
                     /var/run/nginx.pid \
+ && chmod -R g+rwX /var/log/nginx \
+                   /var/cache/nginx \
  && rm /etc/nginx/conf.d/default.conf
 
-USER 1000
+USER 1000:0
 
 CMD ["nginx", "-g", "daemon off;"]
