@@ -22,6 +22,27 @@ Before you start getting upset that 'something is not working properly', please 
    Keeping one process in each container is one of fundamential rules of containerization, and we should strive for it whenever it is possible. \
    By placing only one process in container, we can obtain process isolation, better scalability and easier monitoring implementations. \
    Although NGINX is one process (even if we host multiple domains with multiple webpages), splitting into multiple containers can be good idea. Using this approach, we can do isolated builds, deployments and scaling.
-
-5. **Standarized file directory (/www)** \
+5. **Standardized file directory (/www)** \
    In this container we have a symlink (under `\www`) pointing to right default NGINX static files directory with correct access rights (`/usr/share/nginx/html`). You can just copy your files to `/www` directory.
+
+## Using HTTPS (simplest way)
+This image is configured to communicate on 8080 HTTP out of the box, but there's built-in configurations you can enable to support 8443 HTTPS communications. You need only to remove HTTP config and rename HTTPS config.
+```docker
+FROM pfaffk/nginx:mainline-alma9.2
+
+# Enable HTTPS static file serving
+RUN rm /etc/nginx/conf.d/default-http.conf \
+ && mv /etc/nginx/conf.d/default-https.conf.disabled /etc/nginx/conf.d/default.conf
+ 
+# Copy static files
+COPY dist/ /www/
+```
+
+Now NGINX will try to use self-signed dummy certificates. You should never use them! Mount your certificate files:
+- `/etc/nginx/ssl/fullchain.pem` - certificate
+- `/etc/nginx/ssl/privkey.pem` - private key (certificate key)
+
+For example, mount it when running container by `docker run` command: \
+`docker run -itd --name your-app -p 80:8080 -p 443:8443 -v /srv/your-app/ssl:/etc/nginx/ssl your-app:latest`
+
+Where my `fullchain.pem` and `privkey.pem` files are in `/srv/your-app/ssl` host directory.
