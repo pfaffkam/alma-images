@@ -13,6 +13,7 @@
         body {
             height: 100%;
             margin: 0;
+            box-sizing: border-box;
             font-family: Inter;
         }
 
@@ -58,8 +59,8 @@
 
         .info {
             color: white;
-            overflow: hidden;
             position: absolute;
+            overflow: hidden;
             bottom: 0px;
             left: 20%;
             width: 400px;
@@ -71,14 +72,16 @@
         .icon {
             width: 50px;
             height: 50px;
-            background-color: rgb(59, 58, 58);
-            border-radius: 8px;
+            border-radius: 8px 8px 0px 0px;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             transition: transform 0.3s ease;
+            background-color: #161e29;
+            border: 1px solid #2e3c51;
+            border-bottom: none
         }
 
         .arrow-up::before {
@@ -92,13 +95,13 @@
         }
 
         .content {
-            border-radius: 8px;
+            border-radius: 0px 8px 8px 8px;
             opacity: 0;
             padding: 0px;
             transition: opacity 0.3s ease, height 0.3s ease;
-            width: 100%;
             height: 0px;
-            background-color: rgb(59, 58, 58);
+            background-color: #161e29;
+            border: 1px solid #2e3c51;
         }
     </style>
     </style>
@@ -114,9 +117,18 @@
         <div class="info">
             <div class="icon arrow-up"></div>
             <div class="content">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi placeat, temporibus sit ut atque
-                eaque molestiae. Tempora praesentium ducimus voluptas. Nesciunt fugiat iste odit quisquam omnis magni
-                dolore?
+                Uri: <i><!--#echo var="request_uri" --></i>
+                <br />
+                User IP: <i><!--#echo var="remote_addr" --></i>
+                <br />
+                GeoIP Data: <i><!--#echo var="geoip_country_name" -->, <!--#echo var="geoip_city" -->
+                    (<!--#echo var="geoip_postal_code" -->)</i>
+                <br />
+                Content type: <i><!--#echo var="content_type" --></i>
+                <br />
+                Document root: <i><!--#echo var="document_root" --></i>
+                <br />
+                NGINX Version: <i><!--#echo var="nginx_version" --></i>
             </div>
         </div>
 </body>
