@@ -16,7 +16,16 @@ RUN dnf -y install nginx \
 
 COPY error_pages/ /usr/share/nginx/error_pages/
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY default.conf /etc/nginx/conf.d/error_pages.conf
+COPY includes/ /etc/nginx/includes/
+COPY default-http.conf /etc/nginx/conf.d/default-http.conf
+COPY default-https.conf /etc/nginx/conf.d/default-https.conf.disabled
+
+# Create dummy certificates for HTTPS config.
+RUN mkdir -p /etc/nginx/ssl \
+  && openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/ssl/privkey.pem \
+    -out /etc/nginx/ssl/fullchain.pem \
+    -subj "/C=US/O=Dummy/CN=www.example.com"
 
 # Drop root user
 RUN touch /var/run/nginx.pid \
@@ -24,7 +33,7 @@ RUN touch /var/run/nginx.pid \
  && chown -R 1000:0 /usr/share/nginx \
                     /var/cache/nginx \
                     /var/log/nginx \
-                    /etc/nginx/conf.d \
+                    /etc/nginx \
                     /var/run/nginx.pid \
  && chmod g+s /usr/share/nginx \
  && chmod -R g+rwX /var/log/nginx \
