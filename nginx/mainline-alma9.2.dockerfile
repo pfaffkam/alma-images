@@ -26,6 +26,7 @@ RUN touch /var/run/nginx.pid \
                     /var/log/nginx \
                     /etc/nginx/conf.d \
                     /var/run/nginx.pid \
+ && chmod g+s /usr/share/nginx \
  && chmod -R g+rwX /var/log/nginx \
                    /var/cache/nginx \
  && rm /etc/nginx/conf.d/default.conf
