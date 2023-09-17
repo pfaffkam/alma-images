@@ -4,7 +4,7 @@ EXPOSE 8080
 EXPOSE 8443
 
 LABEL org.opencontainers.image.authors="Kamil Pfaff" \
-      org.opencontainers.image.url="" \
+      org.opencontainers.image.url="https://hub.docker.com/r/pfaffk/nginx" \
       org.opencontainers.image.documentation="https://github.com/Reykez/alma-images/tree/main/nginx/README.md" \
       org.opencontainers.image.source="https://github.com/Reykez/alma-images/tree/main/nginx" \
       org.opencontainers.image.title="NGINX Alma Linux"
@@ -16,7 +16,7 @@ RUN dnf -y install nginx \
 
 COPY error_pages/ /usr/share/nginx/error_pages/
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY error_pages.conf /etc/nginx/conf.d/error_pages.conf
+COPY default.conf /etc/nginx/conf.d/error_pages.conf
 
 # Drop root user
 RUN touch /var/run/nginx.pid \
@@ -29,7 +29,8 @@ RUN touch /var/run/nginx.pid \
  && chmod g+s /usr/share/nginx \
  && chmod -R g+rwX /var/log/nginx \
                    /var/cache/nginx \
- && rm /etc/nginx/conf.d/default.conf
+ && rm /etc/nginx/conf.d/default.conf \
+ && rm -rf /usr/share/nginx/html/*
 
 USER 1000:0
 
