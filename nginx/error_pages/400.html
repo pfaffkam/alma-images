@@ -1,20 +1,18 @@
 <html lang="en">
-
 <head>
-    <title>403</title>
+    <title><!--#echo var="status" --></title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@200;300;400;500;600;700;800&family=Roboto:wght@100&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Manrope:wght@200;300;400;500;600;700;800&family=Roboto:wght@100&display=swap" rel="stylesheet">
     <style>
         html,
         body {
             height: 100%;
             margin: 0;
             box-sizing: border-box;
-            font-family: Inter;
+            font-family: Inter, sans-serif;
+            color: #eeeeee;
         }
 
         #wrapper {
@@ -30,7 +28,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: #eeeeee;
             margin-bottom: 14rem;
         }
 
@@ -61,7 +58,7 @@
             color: white;
             position: absolute;
             overflow: hidden;
-            bottom: 0px;
+            bottom: 0;
             left: 20%;
             width: 400px;
             transition: transform 0.3s ease;
@@ -71,8 +68,8 @@
 
         .icon {
             width: 50px;
-            height: 50px;
-            border-radius: 8px 8px 0px 0px;
+            height: 25px;
+            border-radius: 8px 8px 0 0;
             cursor: pointer;
             display: flex;
             justify-content: center;
@@ -80,33 +77,32 @@
             flex-direction: column;
             transition: transform 0.3s ease;
             background-color: #161e29;
-            border: 1px solid #2e3c51;
-            border-bottom: none
         }
 
         .arrow-up::before {
             content: "\2191";
-            font-size: 20px;
+            font-size: 16px;
         }
 
         .arrow-down::before {
             content: "\2193";
-            font-size: 20px;
+            font-size: 16px;
         }
 
         .content {
-            border-radius: 0px 8px 8px 8px;
-            opacity: 0;
-            padding: 0px;
-            transition: opacity 0.3s ease, height 0.3s ease;
-            height: 0px;
+            border-radius: 0 8px 0 0;
+            padding: 0;
+            height: 0;
             background-color: #161e29;
-            border: 1px solid #2e3c51;
         }
+
+        table tr td {
+            padding: 1px 5px;
+        }
+
     </style>
     </style>
 </head>
-
 <body>
     <div id="wrapper">
         <div class="center">
@@ -114,40 +110,45 @@
             <h2><!--#echo var="status_friendly_text" --></h2>
             <h3><!--#echo var="status_text" --></h3>
         </div>
+        <!--#if expr="${DEBUG_INFO} = on" -->
         <div class="info">
             <div class="icon arrow-up"></div>
             <div class="content">
-                Uri: <i><!--#echo var="request_uri" --></i>
-                <br />
-                User IP: <i><!--#echo var="remote_addr" --></i>
-                <br />
-                GeoIP Data: <i><!--#echo var="geoip_country_name" -->, <!--#echo var="geoip_city" -->
-                    (<!--#echo var="geoip_postal_code" -->)</i>
-                <br />
-                Content type: <i><!--#echo var="content_type" --></i>
-                <br />
-                Document root: <i><!--#echo var="document_root" --></i>
-                <br />
-                NGINX Version: <i><!--#echo var="nginx_version" --></i>
+                <table>
+                    <tr>
+                        <td>Uri:</td><td><i><!--#echo var="request_uri" --></i></td>
+                    </tr>
+                    <tr>
+                        <td>User IP:</td><td><i><!--#echo var="remote_addr" --></i></td>
+                    </tr>
+                    <tr>
+                        <td>Content type:</td><td><i><!--#echo var="content_type" --></i></td>
+                    </tr>
+                    <tr>
+                        <td>Document root:</td><td><i><!--#echo var="document_root" --></i></td>
+                    </tr>
+                    <tr>
+                        <td>NGINX Version:</td><td><i><!--#echo var="nginx_version" --></i></td>
+                    </tr>
+                </table>
             </div>
         </div>
+        <!--$endif -->
 </body>
+<!--#if expr="${DEBUG_INFO} = on" -->
 <script>
-    const info = document.querySelector('.info');
     const icon = document.querySelector('.icon');
     const content = document.querySelector('.content');
     let isExpanded = false;
 
     icon.addEventListener('click', () => {
         if (!isExpanded) {
-            info.style.transform = 'translateY(0%)';
             icon.classList.add('arrow-down');
             icon.classList.remove('arrow-up');
             content.style.opacity = 1;
             content.style.height = 'auto';
             content.style.padding = '4px';
         } else {
-            info.style.transform = 'translateY(0%)';
             icon.classList.remove('arrow-down');
             icon.classList.add('arrow-up');
             content.style.opacity = 0;
@@ -157,5 +158,5 @@
         isExpanded = !isExpanded;
     });
 </script>
-
+<!--$endif -->
 </html>
