@@ -28,13 +28,11 @@ RUN mkdir -p /etc/nginx/ssl \
     -subj "/C=US/O=Dummy/CN=www.example.com"
 
 # Drop root user
-RUN touch /var/run/nginx.pid \
- && ln -s /usr/share/nginx/html /www \
+RUN ln -s /usr/share/nginx/html /www \
  && chown -R 1000:0 /usr/share/nginx \
                     /var/cache/nginx \
                     /var/log/nginx \
                     /etc/nginx \
-                    /var/run/nginx.pid \
  && chmod g+s /usr/share/nginx \
  && chmod -R g+rwX /var/log/nginx \
                    /var/cache/nginx \
